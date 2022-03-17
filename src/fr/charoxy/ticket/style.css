@@ -1,0 +1,22 @@
+.btn{
+    -fx-background-color: green;
+}
+.rec{
+    -fx-arc-height: 10px;
+    -fx-arc-width: 10px;
+    -fx-fill: #3C5F93;
+}
+
+.titre{
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+.texte{
+    -fx-font-size: 15px;
+    -fx-text-fill: white;
+}
+.supprimer{
+    -fx-background-color: red;
+    -fx-text-fill: white;
+}
