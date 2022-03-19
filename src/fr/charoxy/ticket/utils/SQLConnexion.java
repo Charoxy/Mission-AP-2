@@ -71,11 +71,10 @@ public class SQLConnexion {
     public void updateTicket(String titre, String responsable, String etat){
 
         Statement statement = null;
-
-
+        System.out.println(titre + responsable + etat + "");
         try {
             statement = getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("UPDATE MDL.tache SET responsable=\""+responsable+"\", etat=\""+etat+"\"WHERE titre=\""+ titre +"\";");
+            statement.execute("UPDATE mdl.tache SET responsable=\""+responsable+"\", etat=\""+etat+"\" WHERE titre=\""+ titre +"\";");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,6 +98,20 @@ public class SQLConnexion {
         }
 
         return null;
+    }
+
+    public void createTicket(String titre ,String description){
+
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("INSERT INTO mdl.tache\n" +
+                                "(description, responsable, etat, titre)\n" +
+                                "VALUES(\"" + description + "\", NULL, NULL, \"" + titre + "\");");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public Connection getConnection() {

@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    SQLConnexion sqlConnexion = new SQLConnexion("MDL",3307,"root","");
+    SQLConnexion sqlConnexion = new SQLConnexion("mdl",3306,"maxence","root");
 
     @Override
     public void start(Stage primaryStage) throws Exception {

@@ -22,7 +22,7 @@ public class AdminPanel extends Parent {
     SQLConnexion sqlConnexion;
     Button refresh, supprimer,modifier;
     Rectangle recinfo;
-    ComboBox comboResponsable;
+    ComboBox comboResponsable , comboEtat;
 
 
     Label desciption, titre, responsable, etat;
@@ -30,9 +30,9 @@ public class AdminPanel extends Parent {
     public AdminPanel(SQLConnexion sqlConnexion, Stage stage) {
         this.getStylesheets().add("fr/charoxy/ticket/style.css");
 
-        stage.setWidth(700);
-
         this.sqlConnexion = sqlConnexion;
+
+        stage.setWidth(900);
 
         listTache = new ListView<String>();
         refreshList();
@@ -47,12 +47,13 @@ public class AdminPanel extends Parent {
         refresh.setTranslateY(410);
         refresh.setOnAction(e -> {
             refreshList();
+            refreshTache();
         });
 
         recinfo = new Rectangle();
         recinfo.setTranslateX(300);
         recinfo.setTranslateY(10);
-        recinfo.setWidth(200);
+        recinfo.setWidth(250);
         recinfo.setHeight(300);
         recinfo.getStyleClass().add("rec");
 
@@ -79,32 +80,44 @@ public class AdminPanel extends Parent {
         etat.setTranslateX(300);
         etat.setTranslateY(270);
         etat.getStyleClass().add("texte");
-        refreshTache();
 
         supprimer = new Button();
         supprimer.setText("supprimer le ticket");
         supprimer.setTranslateY(320);
-        supprimer.setTranslateX(340);
+        supprimer.setTranslateX(360);
         supprimer.getStyleClass().add("supprimer");
         supprimer.setOnAction(e -> {
             supprimerTicket();
         });
 
-        modifier = new Button("Modifier le ticket");
-        modifier.setTranslateX(520);
-        modifier.setTranslateY(340);
-        modifier.setOnAction(e -> {
-
-        });
 
         comboResponsable = new ComboBox();
         comboResponsable.setItems(sqlConnexion.getResponsable());
-        comboResponsable.setTranslateX(520);
+        comboResponsable.getSelectionModel().select(0);
+        comboResponsable.setTranslateX(600);
         comboResponsable.setTranslateY(50);
 
+        ObservableList<String> etatL = FXCollections.observableArrayList();
+        etatL.add("non commencer");
+        etatL.add("en cours");
+        etatL.add("fini");
+        comboEtat = new ComboBox();
+        comboEtat.setItems(etatL);
+        comboEtat.getSelectionModel().select(0);
+        comboEtat.setTranslateX(600);
+        comboEtat.setTranslateY(100);
 
-        this.getChildren().addAll(listTache, refresh, recinfo, desciption, titre, responsable, etat,supprimer,comboResponsable);
+        modifier = new Button("Modifier le ticket");
+        modifier.setTranslateX(600);
+        modifier.setTranslateY(320);
+        modifier.setOnAction(e -> {
+            sqlConnexion.updateTicket(listTache.getSelectionModel().getSelectedItem().toString(),comboResponsable.getSelectionModel().getSelectedItem().toString(), comboEtat.getSelectionModel().getSelectedItem().toString());
+            refreshTache();
+        });
 
+
+        this.getChildren().addAll(listTache, refresh, recinfo, desciption, titre, responsable, etat,supprimer,comboResponsable , comboEtat , modifier);
+        refreshTache();
 
     }
 
@@ -129,12 +142,23 @@ public class AdminPanel extends Parent {
         try {
             Statement statement = sqlConnexion.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM tache WHERE titre=\"" + item + "\"");
+            int count = 0;
             while (resultSet.next()) {
+                count++;
+                if(!this.getChildren().contains(modifier)){
+                    this.getChildren().addAll(comboEtat,comboResponsable,modifier,supprimer);
+                }
                 titre.setText(item);
                 desciption.setText(resultSet.getString(1));
                 responsable.setText("Responsable : " + resultSet.getString(2));
                 etat.setText("Etat : " + resultSet.getString(3));
-
+            }
+            if (count == 0){
+                titre.setText("Il n'y a pas de ticket");
+                desciption.setText("");
+                responsable.setText("");
+                etat.setText("");
+                this.getChildren().removeAll(comboEtat,comboResponsable,modifier,supprimer);
             }
         } catch (SQLException e) {
             e.printStackTrace();
