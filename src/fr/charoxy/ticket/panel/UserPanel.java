@@ -2,6 +2,7 @@ package fr.charoxy.ticket.panel;
 
 import fr.charoxy.ticket.utils.SQLConnexion;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -44,7 +45,12 @@ public class UserPanel extends Parent {
             if(titre.getText() != null && text.getText() != null){
 
                 connexion.createTicket(titre.getText(),text.getText());
-
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Ticket");
+                alert.setContentText("Le ticket a bien etais transmi");
+                alert.showAndWait();
+                titre.setText("");
+                text.setText("");
             }
 
         });

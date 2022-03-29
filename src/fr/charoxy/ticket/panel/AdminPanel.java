@@ -32,8 +32,6 @@ public class AdminPanel extends Parent {
 
         this.sqlConnexion = sqlConnexion;
 
-        stage.setWidth(900);
-
         listTache = new ListView<String>();
         refreshList();
         listTache.getSelectionModel().select(0);
@@ -118,6 +116,8 @@ public class AdminPanel extends Parent {
 
         this.getChildren().addAll(listTache, refresh, recinfo, desciption, titre, responsable, etat,supprimer,comboResponsable , comboEtat , modifier);
         refreshTache();
+        stage.setWidth(900);
+
 
     }
 

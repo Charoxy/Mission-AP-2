@@ -42,7 +42,7 @@ public class LoginPanel extends Parent {
                         stage.setScene(new Scene(new AdminPanel(sqlConnexion,stage)));
                         break;
                     case "responsable":
-                        stage.setScene(new Scene(new RespPanel()));
+                        stage.setScene(new Scene(new RespPanel(stage,sqlConnexion)));
                         break;
                     case "utilisateur":
                         stage.setScene(new Scene(new UserPanel(stage,sqlConnexion)));

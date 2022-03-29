@@ -19,9 +19,7 @@ public class Main extends Application {
         scene.getStylesheets().add("fr/charoxy/ticket/style.css");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-
         primaryStage.show();
-
 
     }
 
